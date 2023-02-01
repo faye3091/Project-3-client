@@ -15,7 +15,8 @@ import Login from "./pages/Login";
 import Header from "./components/Header";
 
 const httpLink = createHttpLink({
-  uri: "/graphql",
+  uri: "http://localhost:3001/graphql",
+  //uri: "https://movie-lover-server.herokuapp.com/graphql",
 });
 
 const authLink = setContext((_, { headers }) => {
