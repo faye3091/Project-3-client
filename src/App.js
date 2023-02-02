@@ -13,6 +13,7 @@ import Profile from "./pages/ProfileComponent";
 import Signup from "./pages/SignupComponent";
 import Login from "./pages/LoginComponent";
 import Header from "./components/Header";
+import SearchMovie from "./pages/SearchMovies";
 
 const httpLink = createHttpLink({
   uri: "http://localhost:3001/graphql",
@@ -48,6 +49,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/me" element={<Profile />} />
+              <Route path="/searchmovies" element={<SearchMovie />} />
             </Routes>
           </div>
         </div>

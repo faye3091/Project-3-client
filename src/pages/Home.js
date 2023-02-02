@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-
 import { useMutation } from "@apollo/client";
+import { Link } from "react-router-dom";
+
 import { SAVE_MOVIE } from "../utils/mutations";
 import { saveMovieIds, getSavedMovieIds } from "../utils/localStorage";
 
@@ -30,15 +31,16 @@ const Home = () => {
     }
     const { items } = await response.json();
 
-    console.log(items);
-
-    const movieData = items.map((movie) => ({
+    const movieData = await items.map((movie) => ({
       movieId: movie.id,
       movieTitle: movie.fullTitle,
       movieImage: movie.image,
     }));
 
     setMovies(movieData);
+
+    console.log("Movies in Theaters:", movieData);
+
   };
 
   // 
@@ -56,60 +58,89 @@ const Home = () => {
       const { data } = await saveMovie({
         variables: { ...movieToSave },
       });
+
       console.log(data);
+
       setSavedMovieIds([...savedMovieIds, movieToSave.movieId]);
-      saveMovieIds(savedMovieIds);
+
+      //saveMovieIds(savedMovieIds);
+
     } catch (err) {
       console.error(err);
     }
   };
   
   return (
-    <main>
-      <div className="flex-row justify-text-center">
-        <h1>Movies in Theater</h1>
-      </div>
-      <div className="flex-row">
-        <div className="col-12 col-lg-10">
-          {!movies ? (
-            <p>Loading.....</p>
-          ) : (
-            <div className="row row-cols-3">
-              {movies.map((movie, index) => (
-                <div key={index} className="col d-flex">
-                  <div className="card mb-4" style={{ width: "22rem" }}>
-                    <img
-                      src={movie.movieImage}
-                      alt={movie.movieTitle}
-                      className="card-img-top"
-                    />
-                    <div className="card-body">
-                      <h5 className="card-title">{movie.movieTitle}</h5>
-                      {Auth.loggedIn() && (
-                        <button
-                          disabled={savedMovieIds?.some(
-                            (savedId) => savedId === movie.movieId
-                          )}
-                          className="btn btn-block btn-primary"
-                          onClick={() => handleSaveMovie(movie.movieId)}
-                          style={{ width: "100%" }}
-                        >
-                          {savedMovieIds?.some(
-                            (savedId) => savedId === movie.movieId
-                          )
-                            ? "Movie Already Saved!"
-                            : "Save This Movie!"}
-                        </button>
-                      )}
+    <>
+      <main>
+        <div className="row justify-content-right">
+          <div className="col-sm text-center">
+            <Link className="btn btn-lg btn-info mb-4" to="/searchmovies">
+              Search for Movies
+            </Link>
+          </div>
+        </div>
+
+        <div className="row justify-content-center mb-4">
+          <div className="col-sm text-center">
+            <h2>Movies in Theaters</h2>
+          </div>
+        </div>
+
+        <div className="flex-row">
+          <div className="col-sm-12">
+            {!movies ? (
+              <p>Searching.....</p>
+            ) : (
+              <div className="row text-center">
+                {movies.map((movie, index) => (
+                  <div key={index} className="col d-flex">
+                    <div className="card mb-4" style={{ width: "22rem" }}>
+                      <img
+                        src={movie.movieImage}
+                        alt={movie.movieTitle}
+                        className="card-img-top"
+                      />
+                      <div
+                        className="card-body"
+                        style={{ position: "relative" }}
+                      >
+                        <h5 className="card-title" style={{marginBottom: "70px"} } >{movie.movieTitle}</h5>
+                        {Auth.loggedIn() && (
+                          <button
+                            disabled={savedMovieIds?.some(
+                              (savedId) => savedId === movie.movieId
+                            )}
+                            className="btn btn-block btn-primary"
+                            onClick={() =>
+                              handleSaveMovie(movie.movieId).then(
+                                saveMovieIds(savedMovieIds)
+                              )
+                            }
+                            style={{ width: "100%", position: "absolute", bottom: "1px", left: "1px"}}
+                          >
+                            {savedMovieIds?.some(
+                              (savedId) => savedId === movie.movieId
+                            )
+                              ? "Movie Already Saved!"
+                              : "Save This Movie!"}
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          )}
+                ))}
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+      {error && (
+        <div className="my-3 p-3 bg-danger text-white">
+          Something went wrong
+        </div>
+      )}
+    </>
   );
 };
 
