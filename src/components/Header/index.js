@@ -21,6 +21,10 @@ const Header = () => {
           {Auth.loggedIn() ? (
             <>
               <span>Hey there, {Auth.getProfile().data.username}!</span>
+              <div><Link className="text-light" as={Link} to='/me'>
+                    See Your Favorite Movies
+                  </Link>
+              </div>
               <button className="btn btn-lg btn-light m-2" onClick={logout}>
                 Logout
               </button>

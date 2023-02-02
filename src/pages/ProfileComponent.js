@@ -17,7 +17,7 @@ import { removeMovieId } from "../utils/localStorage";
 
 const Profile = () => {
     const { loading, data } = useQuery(QUERY_USER);
-    const [removeMovie, {error}] = useMutation(REMOVE_MOVIE);
+    const [removeMovie] = useMutation(REMOVE_MOVIE);
 
     const userData = data?.me || {};
 
