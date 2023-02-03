@@ -34,7 +34,7 @@ const Profile = () => {
             });
       
             // upon success, remove book's id from localStorage
-            removeMovieId(movieId);
+            //removeMovieId(movieId);
           } catch (err) {
             console.error(err);
           }
@@ -53,17 +53,17 @@ const Profile = () => {
         </Jumbotron>
         <Container>
             <h2>
-            {userData.savedMovies?.length
-            ? `Viewing ${userData.savedMovies.length} saved ${
-                userData.savedMovies.length === 1 ? 'movie' : 'movies'
+            {userData.favoriteMovies?.length
+            ? `Viewing ${userData.favoriteMovies.length} saved ${
+                userData.favoriteMovies.length === 1 ? 'movie' : 'movies'
               }:`
             : 'You have no saved movies!'}
             </h2>
             <CardColumns>
-            {userData.savedMovies?.map((movie) => {
+            {userData.favoriteMovies?.map((movie) => {
             return (
               <Card key={movie.movieId} border="dark">
-                {movie.image ? (
+                {movie.movieImage ? (
                   <Card.Img
                     src={movie.movieImage}
                     alt={`The poster for ${movie.movieTitle}`}
@@ -74,7 +74,7 @@ const Profile = () => {
                   <Card.Title>{movie.movieTitle}</Card.Title>
                   <Button
                     className="btn-block btn-danger"
-                    onClick={() => handleDeleteMovie(movie.movieId)}
+                    onClick={() => handleDeleteMovie(movie.movieId).then(removeMovieId(movie.movieId))}
                   >
                     Unfavorite Movie!
                   </Button>
