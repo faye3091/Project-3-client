@@ -59,7 +59,7 @@ const Profile = () => {
               }:`
             : 'You have no saved movies!'}
             </h2>
-            <CardColumns>
+            <CardColumns className="row row-cols-3 g-3">
             {userData.favoriteMovies?.map((movie) => {
             return (
               <Card key={movie.movieId} border="dark">
