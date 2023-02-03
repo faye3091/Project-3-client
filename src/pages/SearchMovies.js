@@ -25,7 +25,7 @@ const SearchMovies = () => {
       return false;
     }
 
-    const searchUrl = `https://imdb-api.com/en/API/SearchMovie/k_h0j7l9s3/${searchInput.trim()}`;
+    const searchUrl = `https://imdb-api.com/en/API/SearchMovie/k_dya52m29/${searchInput.trim()}`;
     console.log("Searching URL", searchUrl);
 
     try {
