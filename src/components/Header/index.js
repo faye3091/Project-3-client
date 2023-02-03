@@ -1,8 +1,56 @@
+// import React from 'react';
+// import { Link } from 'react-router-dom';
+
+// import Auth from '../../utils/auth';
+
+// const Header = () => {
+//   const logout = (event) => {
+//     event.preventDefault();
+//     Auth.logout();
+//   };
+//   return (
+//     <header className="bg-primary text-light mb-4 py-3 flex-row align-center">
+//       <div className="container flex-row justify-space-between-lg justify-center align-center">
+//         <div>
+//           <Link className="text-light" to="/">
+//             <h1 className="m-0">Movie Lovers</h1>
+//           </Link>
+//           <p className="m-0">Get into the mind of a movie lover.</p>
+//         </div>
+//         <div>
+//           {Auth.loggedIn() ? (
+//             <>
+//               <span>Hey there, {Auth.getProfile().data.username}!</span>
+//               <div><Link className="text-light" as={Link} to='/me'>
+//                     See Your Favorite Movies
+//                   </Link>
+//               </div>
+//               <button className="btn btn-lg btn-light m-2" onClick={logout}>
+//                 Logout
+//               </button>
+//             </>
+//           ) : (
+//             <>
+//               <Link className="btn btn-lg btn-info m-2" to="/login">
+//                 Login
+//               </Link>
+//               <Link className="btn btn-lg btn-light m-2" to="/signup">
+//                 Signup
+//               </Link>
+//             </>
+//           )}
+//         </div>
+//       </div>
+//     </header>
+//   );
+// };
+
+// export default Header;
+
+
 import React from 'react';
 import { Link } from 'react-router-dom';
-
 import Auth from '../../utils/auth';
-
 const Header = () => {
   const logout = (event) => {
     event.preventDefault();
@@ -11,13 +59,10 @@ const Header = () => {
   return (
     <header className="bg-primary text-light mb-4 py-3 flex-row align-center">
       <div className="container flex-row justify-space-between-lg justify-center align-center">
-        <div>
+        <div className="title-container">
           <Link className="text-light" to="/">
-            <h1 className="m-0">Movie Lovers</h1>
+            <h1 className="m-0 title" >Movie Lovers</h1>
           </Link>
-          <p className="m-0">Get into the mind of a movie lover.</p>
-        </div>
-        <div>
           {Auth.loggedIn() ? (
             <>
               <span>Hey there, {Auth.getProfile().data.username}!</span>
@@ -31,18 +76,20 @@ const Header = () => {
             </>
           ) : (
             <>
+            <div className='login'>
               <Link className="btn btn-lg btn-info m-2" to="/login">
                 Login
               </Link>
               <Link className="btn btn-lg btn-light m-2" to="/signup">
                 Signup
               </Link>
+              </div>
             </>
           )}
+          <p className="m-0 slogan">Get into the mind of a movie lover.</p>
         </div>
       </div>
     </header>
   );
 };
-
 export default Header;

@@ -26,7 +26,9 @@ const Home = () => {
   // Search movies in theaters function and set state
   const searchMoviesInTheater = async () => {
     const response = await fetch(
-      `https://imdb-api.com/en/API/InTheaters/k_1o5t5erq`
+
+      `https://imdb-api.com/en/API/InTheaters/k_dya52m29`
+
     );
     if (!response.ok) {
       throw new Error("something went wrong");
