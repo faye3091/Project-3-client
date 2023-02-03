@@ -15,3 +15,13 @@ code {
 h1 {
   margin: 50px;
 }
+
+.login, .title {
+  display: inline;
+}
+.title-container {
+  justify-content: space-between
+}
+.login {
+  float: right;
+}
