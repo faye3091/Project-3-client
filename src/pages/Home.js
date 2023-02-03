@@ -1,30 +1,34 @@
 import React, { useState, useEffect } from "react";
-import { useMutation } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import { Link } from "react-router-dom";
 
 import { SAVE_MOVIE } from "../utils/mutations";
-import { saveMovieIds, getSavedMovieIds } from "../utils/localStorage";
+import { QUERY_USER } from "../utils/queries";
 
 import Auth from "../utils/auth";
 
 const Home = () => {
+  // get user data
+  const { loading, data } = useQuery(QUERY_USER);
+
+  const userData = data?.me || {};
+
   // Create state to hold movies in theater
   const [movies, setMovies] = useState([[]]);
 
-  // Create state hold saved movieIds values
-  const [savedMovieIds, setSavedMovieIds] = useState(getSavedMovieIds);
-
   const [saveMovie, { error }] = useMutation(SAVE_MOVIE);
 
-  // useEffect to search for movies in theater only once
+  // useEffect to search for movies in theaters only once
   useEffect(() => {
-    searchMoviesInTheater();
+    searchMoviesInTheater()
   }, []);
 
-  // Search movies in theater function
+  // Search movies in theaters function and set state
   const searchMoviesInTheater = async () => {
     const response = await fetch(
+
       `https://imdb-api.com/en/API/InTheaters/k_dya52m29`
+
     );
     if (!response.ok) {
       throw new Error("something went wrong");
@@ -53,7 +57,7 @@ const Home = () => {
       return false;
     }
 
-    // Save the movie
+    // Save the chosen movie
     try {
       const { data } = await saveMovie({
         variables: { ...movieToSave },
@@ -61,15 +65,15 @@ const Home = () => {
 
       console.log(data);
 
-      setSavedMovieIds([...savedMovieIds, movieToSave.movieId]);
-
-      //saveMovieIds(savedMovieIds);
-
     } catch (err) {
       console.error(err);
     }
   };
-  
+
+  if (loading) {
+    return <h2>LOADING...</h2>;
+  }
+
   return (
     <>
       <main>
@@ -105,22 +109,37 @@ const Home = () => {
                         className="card-body"
                         style={{ position: "relative" }}
                       >
-                        <h5 className="card-title" style={{marginBottom: "70px"} } >{movie.movieTitle}</h5>
+                        {Auth.loggedIn() ? (
+                          <h5
+                            className="card-title"
+                            style={{ marginBottom: "65px" }}
+                          >
+                            {movie.movieTitle}
+                          </h5>
+                        ) : (
+                          <h5
+                            className="card-title"
+                          >
+                            {movie.movieTitle}
+                          </h5>
+                        )}
+                        
                         {Auth.loggedIn() && (
                           <button
-                            disabled={savedMovieIds?.some(
-                              (savedId) => savedId === movie.movieId
+                            disabled={userData.favoriteMovies?.some(
+                              (favMovie) => favMovie.movieId === movie.movieId
                             )}
                             className="btn btn-block btn-primary"
-                            onClick={() =>
-                              handleSaveMovie(movie.movieId).then(
-                                saveMovieIds(savedMovieIds)
-                              )
-                            }
-                            style={{ width: "100%", position: "absolute", bottom: "1px", left: "1px"}}
+                            onClick={() => handleSaveMovie(movie.movieId)}
+                            style={{
+                              width: "100%",
+                              position: "absolute",
+                              bottom: "1px",
+                              left: "1px",
+                            }}
                           >
-                            {savedMovieIds?.some(
-                              (savedId) => savedId === movie.movieId
+                            {userData.favoriteMovies?.some(
+                              (favMovie) => favMovie.movieId === movie.movieId
                             )
                               ? "Movie Already Saved!"
                               : "Save This Movie!"}

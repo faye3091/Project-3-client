@@ -1,20 +1,22 @@
 import React, { useState } from "react";
-import { useMutation } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 
 import { SAVE_MOVIE } from "../utils/mutations";
-import { saveMovieIds, getSavedMovieIds } from "../utils/localStorage";
+import { QUERY_USER } from "../utils/queries";
+
 import Auth from "../utils/auth";
 
-
 const SearchMovies = () => {
-  // create state for holding returned movie api data
+  // get user data
+  const { loading, data } = useQuery(QUERY_USER);
+
+  const userData = data?.me || {};
+
+  // create state for holding returned movies from api
   const [searchedMovies, setSearchedMovies] = useState([]);
 
   // create state for holding our search field data
   const [searchInput, setSearchInput] = useState("");
-
-  // create state to hold saved movieId values
-  const [savedMovieIds, setSavedMovieIds] = useState(getSavedMovieIds());
 
   const [saveMovie, { error }] = useMutation(SAVE_MOVIE);
 
@@ -25,7 +27,9 @@ const SearchMovies = () => {
       return false;
     }
 
+
     const searchUrl = `https://imdb-api.com/en/API/SearchMovie/k_dya52m29/${searchInput.trim()}`;
+    
     console.log("Searching URL", searchUrl);
 
     try {
@@ -55,7 +59,7 @@ const SearchMovies = () => {
     }
 
     setSearchInput("");
-  }
+  };
 
   const handleSaveMovie = async (movieId) => {
     const movieToSave = searchedMovies.find(
@@ -68,7 +72,7 @@ const SearchMovies = () => {
       return false;
     }
 
-    // Save the movie
+    // Save the chosen movie
     try {
       const { data } = await saveMovie({
         variables: { ...movieToSave },
@@ -76,13 +80,14 @@ const SearchMovies = () => {
 
       console.log(data);
 
-      setSavedMovieIds([...savedMovieIds, movieToSave.movieId]);
-
-      //console.log("saved movie Ids", savedMovieIds);
     } catch (err) {
       console.error(err);
     }
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
@@ -131,23 +136,23 @@ const SearchMovies = () => {
                         className="card-body"
                         style={{ position: "relative" }}
                       >
-                        <h5
-                          className="card-title"
-                          style={{ marginBottom: "70px" }}
-                        >
-                          {movie.movieTitle}
-                        </h5>
+                        {Auth.loggedIn() ? (
+                          <h5
+                            className="card-title"
+                            style={{ marginBottom: "65px" }}
+                          >
+                            {movie.movieTitle}
+                          </h5>
+                        ) : (
+                          <h5 className="card-title">{movie.movieTitle}</h5>
+                        )}
                         {Auth.loggedIn() && (
                           <button
-                            disabled={savedMovieIds?.some(
-                              (savedId) => savedId === movie.movieId
+                            disabled={userData.favoriteMovies?.some(
+                              (favMovie) => favMovie.movieId === movie.movieId
                             )}
                             className="btn btn-block btn-primary"
-                            onClick={() =>
-                              handleSaveMovie(movie.movieId).then(
-                                saveMovieIds(savedMovieIds)
-                              )
-                            }
+                            onClick={() => handleSaveMovie(movie.movieId)}
                             style={{
                               width: "100%",
                               position: "absolute",
@@ -155,8 +160,8 @@ const SearchMovies = () => {
                               left: "1px",
                             }}
                           >
-                            {savedMovieIds?.some(
-                              (savedId) => savedId === movie.movieId
+                            {userData.favoriteMovies?.some(
+                              (favMovie) => favMovie.movieId === movie.movieId
                             )
                               ? "Movie Already Saved!"
                               : "Save This Movie!"}
