@@ -13,8 +13,7 @@ import { REMOVE_MOVIE } from '../utils/mutations';
 import { Link } from 'react-router-dom';
 
 import Auth from '../utils/auth';
-//import { async } from "q";
-import { removeMovieId } from "../utils/localStorage";
+
 
 const Profile = () => {
     const { loading, data } = useQuery(QUERY_USER);
@@ -34,8 +33,7 @@ const Profile = () => {
               variables: { movieId },
             });
       
-            // upon success, remove book's id from localStorage
-            //removeMovieId(movieId);
+            console.log(data);
           } catch (err) {
             console.error(err);
           }
@@ -47,53 +45,58 @@ const Profile = () => {
 
       return (
         <>
-        <div className="row justify-content-right">
-          <div className="col-sm text-center">
-            <Link className="btn btn-lg btn-info mb-0" to="/searchmovies">
-              Search for Movies
-            </Link>
+          <div className="row justify-content-right">
+            <div className="col-sm text-center">
+              <Link className="btn btn-lg btn-info mb-0" to="/searchmovies">
+                Search for Movies
+              </Link>
+            </div>
           </div>
-        </div>
-        <Jumbotron fluid className="text-light bg-dark">
+          <Jumbotron fluid className="text-light bg-dark">
             <Container>
-                <h1>Viewing {userData.username}'s favorite movies!</h1>
+              <h1>Viewing {userData.username}'s favorite movies!</h1>
             </Container>
-        </Jumbotron>
-        <Container>
+          </Jumbotron>
+          <Container>
             <h2>
-            {userData.favoriteMovies?.length
-            ? `Viewing ${userData.favoriteMovies.length} saved ${
-                userData.favoriteMovies.length === 1 ? 'movie' : 'movies'
-              }:`
-            : 'You have no saved movies!'}
+              {userData.favoriteMovies?.length
+                ? `Viewing ${userData.favoriteMovies.length} saved ${
+                    userData.favoriteMovies.length === 1 ? "movie" : "movies"
+                  }:`
+                : "You have no saved movies!"}
             </h2>
             <CardColumns className="row row-cols-3 g-3">
-            {userData.favoriteMovies?.map((movie) => {
-            return (
-              <Card key={movie.movieId} border="dark">
-                {movie.movieImage ? (
-                  <Card.Img
-                    src={movie.movieImage}
-                    alt={`The poster for ${movie.movieTitle}`}
-                    variant="top"
-                  />
-                ) : null}
-                <Card.Body>
-                  <Card.Title>{movie.movieTitle}</Card.Title>
-                  <Button
-                    className="btn-block btn-danger"
-                    onClick={() => handleDeleteMovie(movie.movieId).then(removeMovieId(movie.movieId))}
-                  >
-                    Unfavorite Movie!
-                  </Button>
-                </Card.Body>
-              </Card>
-            );
-          })}
+              {userData.favoriteMovies?.map((movie) => {
+                return (
+                  <Card key={movie.movieId} border="dark">
+                    {movie.movieImage ? (
+                      <Card.Img
+                        src={movie.movieImage}
+                        alt={`The poster for ${movie.movieTitle}`}
+                        variant="top"
+                      />
+                    ) : null}
+                    <Card.Body>
+                      <Card.Title>{movie.movieTitle}</Card.Title>
+                      <Button
+                        className="btn-block btn-danger"
+                        onClick={() => handleDeleteMovie(movie.movieId)}
+                      >
+                        Unfavorite Movie!
+                      </Button>
+                    </Card.Body>
+                  </Card>
+                );
+              })}
             </CardColumns>
-        </Container>
+          </Container>
+          {error && (
+            <div className="my-3 p-3 bg-danger text-white">
+              Something went wrong
+            </div>
+          )}
         </>
-      )
+      );
 
 }
 
