@@ -7,21 +7,54 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+header {
+  background-color: rgba(81, 50, 219, 0.918);
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
 
 h1 {
-  margin: 50px;
+  margin: 30px;
+}
+
+h2 {
+  margin: 20px;
+  text-align: center;
 }
 
 .login, .title {
   display: inline;
 }
 .title-container {
+  display: flex;
   justify-content: space-between
 }
 .login {
   float: right;
+}
+
+.favoriteMovie {
+  display: flex;
+  
+}
+
+.logout {
+  float: right;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+img {
+width: 275px;
+}
+
+.movieLogo {
+  display: flex;
+  align-items: center;
 }

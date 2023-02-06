@@ -10,6 +10,7 @@ import {
 import { useQuery, useMutation } from '@apollo/client';
 import { QUERY_USER } from '../utils/queries';
 import { REMOVE_MOVIE } from '../utils/mutations';
+import { Link } from 'react-router-dom';
 
 import Auth from '../utils/auth';
 //import { async } from "q";
@@ -17,7 +18,7 @@ import { removeMovieId } from "../utils/localStorage";
 
 const Profile = () => {
     const { loading, data } = useQuery(QUERY_USER);
-    const [removeMovie] = useMutation(REMOVE_MOVIE);
+    const [removeMovie, { error } ] = useMutation(REMOVE_MOVIE);
 
     const userData = data?.me || {};
 
@@ -46,6 +47,13 @@ const Profile = () => {
 
       return (
         <>
+        <div className="row justify-content-right">
+          <div className="col-sm text-center">
+            <Link className="btn btn-lg btn-info mb-0" to="/searchmovies">
+              Search for Movies
+            </Link>
+          </div>
+        </div>
         <Jumbotron fluid className="text-light bg-dark">
             <Container>
                 <h1>Viewing {userData.username}'s favorite movies!</h1>
