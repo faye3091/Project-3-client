@@ -17,7 +17,7 @@ import SearchMovie from "./pages/SearchMovies";
 
 const httpLink = createHttpLink({
   //uri: "http://localhost:3001/graphql",
-  uri: "/graphql",
+  uri: "https://movie-lover-server.herokuapp.com/graphql",
 });
 
 const authLink = setContext((_, { headers }) => {
