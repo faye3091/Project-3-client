@@ -27,7 +27,7 @@ const Home = () => {
   const searchMoviesInTheater = async () => {
     const response = await fetch(
 
-      `https://imdb-api.com/en/API/InTheaters/k_dya52m29`
+      `https://imdb-api.com/en/API/InTheaters/k_1o5t5erq`
 
     );
     if (!response.ok) {
