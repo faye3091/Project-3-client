@@ -1,19 +1,19 @@
-# Movie Lover - Server
+
+# Movie Lover - Client
 
 ## Description
 
-This is the server side of the Movie Lover app. Please refer to the front end app for more info: [Movie Lover Front-End](https://github.com/faye3091/Project-3-client)
+Movie Lover is movie search engine app that allows you to curate a list of your favorite movies and display them to your profile.
+
 
 ## Usage
 
-![screenshot-01](./public/images/screenshot-01.png)
+[Movie Lover](https://movie-lover.herokuapp.com/login)
 
-## Installation
-
-Run `npm i` to install dependencies.
-
-Run `npm start` in the command line to start the server.
-
+![screenshot-01](./assets/images/screenshot-01.png)
+![screenshot-02](./assets/images/screenshot-02.png)
+![screenshot-03](./assets/images/screenshot-03.png)
+![screenshot-04](./assets/images/screenshot-04.png)
 
 ## Credits
 
@@ -28,4 +28,5 @@ Run `npm start` in the command line to start the server.
 
 ## License
 
-Please refer to the LICENSE in the repo
+Please refer to the LICENCE in the repo
+
