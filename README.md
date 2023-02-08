@@ -1,3 +1,4 @@
+
 # Movie Lover - Client
 
 ## Description
@@ -28,3 +29,4 @@ Movie Lover is movie search engine app that allows you to curate a list of your 
 ## License
 
 Please refer to the LICENCE in the repo
+
